@@ -2,8 +2,8 @@
 
 The tooling Skript deserves! A linter for Skript on VSCode and more.
 
-[![GitHub issues](https://img.shields.io/github/issues/SkriptInsight/SkriptInsightKt?style=for-the-badge)](https://github.com/SkriptInsight/SkriptInsight/issues)
-[![GitHub license](https://img.shields.io/github/license/SkriptInsight/SkriptInsightKt?style=for-the-badge)](https://github.com/SkriptInsight/SkriptInsight/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/SkriptInsight/SkriptInsightKt?style=for-the-badge)](https://github.com/SkriptInsight/SkriptInsightKt/issues)
+[![GitHub license](https://img.shields.io/github/license/SkriptInsight/SkriptInsightKt?style=for-the-badge)](https://github.com/SkriptInsight/SkriptInsightKt/blob/master/LICENSE)
 
 SkriptInsightKt is an **experimental** open-source parser and a linter for [Skript](https://github.com/SkriptLang/Skript). It works by reading the code written by a user and analysing it to provide a rich editing experience for Skript users.
 
