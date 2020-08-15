@@ -6,6 +6,7 @@ enum class IndentationType(val char: Char = Char.MIN_VALUE) {
     UNKNOWN();
 
     companion object {
+        @JvmStatic
         fun fromCharacter(char: Char): IndentationType {
             return values().firstOrNull { it.char == char } ?: UNKNOWN
         }

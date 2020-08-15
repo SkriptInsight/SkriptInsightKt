@@ -12,6 +12,7 @@ import io.github.skriptinsight.file.node.indentation.IndentationData
  */
 data class SkriptNodeData(val lineNumber: Int, val rawContent: String, val indentationData: Array<IndentationData>) {
     companion object {
+        @JvmStatic
         fun fromLine(lineNumber: Int, content: String): SkriptNodeData {
             return SkriptNodeData(lineNumber,
                     content,

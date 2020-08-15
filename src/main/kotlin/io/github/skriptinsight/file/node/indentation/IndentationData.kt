@@ -2,6 +2,7 @@ package io.github.skriptinsight.file.node.indentation
 
 data class IndentationData(val type: IndentationType, val amount: Int) {
     companion object {
+        @JvmStatic
         fun fromIndentation(takeWhile: String): Array<IndentationData> {
             return takeWhile.groupBy { it }
                     .map {
