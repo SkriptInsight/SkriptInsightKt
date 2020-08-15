@@ -24,14 +24,10 @@ class IndentationTests {
     }
 
     @Test
-    fun `IndentationData knows about mixed indentations`() {
+    fun `IndentationData can handle mixed indentation`() {
         val indents = listOf(IndentationType.TAB, IndentationType.SPACE)
-        repeat(5) { count ->
-            val indentString = indents.joinToString("") { it.char.toString().repeat(count) }
-            val data = IndentationData.fromIndentation(indentString)
-            if (count != 0) {
-                assert(data.size == indents.size) { "${data.size} == ${indents.size}" }
-            }
-        }
+        val indentString = indents.joinToString("") { it.char.toString().repeat(4) }
+        val data = IndentationData.fromIndentation(indentString)
+        assert(data.size == indents.size) { "${data.size} == ${indents.size}" }
     }
 }
