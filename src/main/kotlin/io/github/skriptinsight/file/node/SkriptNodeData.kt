@@ -3,7 +3,7 @@ package io.github.skriptinsight.file.node
 import io.github.skriptinsight.file.node.indentation.IndentationData
 
 /**
- * Represents a line from a [Skript file][SkriptFile].
+ * Represents a line from a [Skript file][io.github.skriptinsight.file.SkriptFile].
  *
  * @param lineNumber The number of this line.
  * @param rawContent The raw content of this line.
