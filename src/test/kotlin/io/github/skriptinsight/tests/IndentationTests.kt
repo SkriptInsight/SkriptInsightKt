@@ -6,20 +6,19 @@ import org.junit.jupiter.api.Test
 
 class IndentationTests {
     @Test
-    fun `IndentationType knows indentations`() {
+    fun `IndentationType is correct`() {
         assert(IndentationType.fromCharacter(' ') == IndentationType.SPACE)
         assert(IndentationType.fromCharacter('\t') == IndentationType.TAB)
         assert(IndentationType.fromCharacter('a') == IndentationType.UNKNOWN)
     }
 
     @Test
-    fun `IndentationData knows how to count`() {
+    fun `IndentationData count is correct`() {
+        val indentationCount = 1
         listOf(IndentationType.TAB, IndentationType.SPACE).forEach { indent ->
-            repeat(5) { count ->
-                IndentationData.fromIndentation(indent.char.toString().repeat(count)).forEach {
-                    assert(it.amount == count)
-                    assert(it.type == indent)
-                }
+            IndentationData.fromIndentation(indent.char.toString().repeat(indentationCount)).forEach {
+                assert(it.amount == indentationCount)
+                assert(it.type == indent)
             }
         }
     }
