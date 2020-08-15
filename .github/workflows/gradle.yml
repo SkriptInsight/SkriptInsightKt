@@ -22,5 +22,15 @@ jobs:
         java-version: 11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Upload built jar to Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: skriptinsightkt-output
+        path: build/libs
+
+    - name: Test with Gradle
+      run: ./gradlew test 
