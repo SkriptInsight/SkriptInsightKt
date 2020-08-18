@@ -28,7 +28,7 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     /**
      * The un-indented content of this node.
      */
-    val unindentedRawContent: String = rawContent.dropWhile { it.isWhitespace() }
+    val unIndentedRawContent: String = rawContent.dropWhile { it.isWhitespace() }
 
     /**
      * The count of the indentation of this node.
@@ -47,7 +47,7 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     var comment: String = ""
 
     init {
-        val linePatternMatcher = linePattern.matcher(unindentedRawContent)
+        val linePatternMatcher = linePattern.matcher(unIndentedRawContent)
         // Check if line has a comment
         if (linePatternMatcher.matches()) {
             //Replacement is required because of the 'double-escape' on the comment char
@@ -62,7 +62,7 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
                 pos(indentLength + linePatternMatcher.start(2))..pos(indentLength + linePatternMatcher.end(2))
         } else {
             //No comment. Default to un-indented raw content and no comment
-            content = unindentedRawContent.trimEnd()
+            content = unIndentedRawContent.trimEnd()
             contentRange = pos(indentLength)..pos(indentLength + content.length)
             commentRange = contentRange!!.end..contentRange!!.end
         }

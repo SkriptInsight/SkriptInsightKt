@@ -21,7 +21,7 @@ class SkriptNodeTests {
     @Test
     fun `SkriptNode un-escaped content is correct`() {
         val data = createTestNodeData()
-        assert(data.unindentedRawContent == content)
+        assert(data.unIndentedRawContent == content)
     }
 
     @Test
