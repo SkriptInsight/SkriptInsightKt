@@ -1,40 +1,46 @@
 package io.github.skriptinsight.file
 
-import io.github.skriptinsight.file.node.SkriptNodeData
+import io.github.skriptinsight.file.node.SkriptNode
 import java.io.File
+import java.net.URI
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 /**
  * Represents a **Skript file**.
  * @param url The path to the file
- * @param nodeData The data for each node (line)
+ * @param nodes The data for each node (line)
  * @author NickAcPT
  */
-class SkriptFile(val url: File, val nodeData: ConcurrentMap<Int, SkriptNodeData>) {
+class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
+    init {
+        computeNodeDataParents(nodes.values)
+    }
 
     companion object {
-        private fun fromText(url: File, lines: List<String>): SkriptFile {
+        private fun fromText(url: URI, lines: List<String>): SkriptFile {
             return SkriptFile(
                     url,
-                    ConcurrentHashMap<Int, SkriptNodeData>().apply {
-                        lines.forEachIndexed { i, it -> this[i] = SkriptNodeData.fromLine(i, it) }
+                    ConcurrentHashMap<Int, SkriptNode>().apply {
+                        lines.forEachIndexed { i, it -> this[i] = SkriptNode.fromLine(i, it) }
                     }
             )
         }
 
-        fun fromFile(url: File): SkriptFile {
-            return fromText(url, url.readLines())
+        fun fromFile(url: URI): SkriptFile {
+            return fromText(url, File(url).readLines())
         }
 
-        fun fromText(url: File, text: String): SkriptFile {
+        fun fromText(url: URI, text: String): SkriptFile {
             return fromText(url, text.lines())
         }
+
     }
 
 
-    operator fun get(index: Int): SkriptNodeData? {
-        return nodeData[index]
+    operator fun get(index: Int): SkriptNode? {
+        return nodes[index]
     }
 
 }
+

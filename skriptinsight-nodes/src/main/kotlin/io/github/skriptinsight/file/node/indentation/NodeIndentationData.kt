@@ -1,12 +1,12 @@
 package io.github.skriptinsight.file.node.indentation
 
-data class IndentationData(val type: IndentationType, val amount: Int) {
+data class NodeIndentationData(val type: IndentationType, val amount: Int) {
     companion object {
         @JvmStatic
-        fun fromIndentation(takeWhile: String): Array<IndentationData> {
+        fun fromIndentation(takeWhile: String): Array<NodeIndentationData> {
             return takeWhile.groupBy { it }
                     .map {
-                        IndentationData(
+                        NodeIndentationData(
                                 IndentationType.fromCharacter(
                                         it.key),
                                 it.value.size
