@@ -1,4 +1,4 @@
-package io.github.skriptinsight.location
+package io.github.skriptinsight.file.location
 
 /**
  * Represents a zero-indexed position in a character sequence
@@ -9,10 +9,6 @@ package io.github.skriptinsight.location
 data class Position(val lineNumber: Int, val column: Int) {
     operator fun rangeTo(other: Position): Range {
         return Range(this, other)
-    }
-
-    fun String.substring(position: Position): String {
-        return this.substring(resolvePosition(this))
     }
 
     fun resolvePosition(string: String): Int {
@@ -43,4 +39,7 @@ data class Position(val lineNumber: Int, val column: Int) {
     }
 }
 
+fun String.substring(position: Position): String {
+    return this.substring(position.resolvePosition(this))
+}
 
