@@ -30,17 +30,26 @@ class SkriptNodeTests {
             fileUrl, """
             on chat:
                 send "hi"
+                if true:
+                    send "hi 2"
         """.trimIndent()
         )
 
         assert(file.rootNodes.size == 1)
         assert(file[0]?.parent == null)
         assert(file[1]?.parent != null)
+        assert(file[2]?.parent != null)
+        assert(file[3]?.parent != null)
 
         assert(file[0]?.children?.isNotEmpty() ?: false)
         assert(file[1]?.children?.isNullOrEmpty() ?: false)
+        assert(file[2]?.children?.isNotEmpty() ?: false)
+        assert(file[3]?.children?.isNullOrEmpty() ?: false)
 
         assert(file[0]?.children?.get(0) == file[1])
+
+        assert(file[3]?.parent != file[0])
+        assert(file[3]?.parent == file[2])
     }
 
     @Test

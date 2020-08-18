@@ -31,14 +31,14 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     val unIndentedRawContent: String = rawContent.dropWhile { it.isWhitespace() }
 
     /**
-     * The count of the indentation of this node.
+     * The normalized count of the indentation of this node.
      */
-    val indentCount = indentations.sumBy { it.type.size * it.amount }
+    val normalizedIndentCount = indentations.sumBy { it.type.size * it.amount }
 
     /**
-     * The length of the indentation of this node.
+     * The count of the indentation of this node.
      */
-    val indentLength = rawContent.takeWhile { it.isWhitespace() }.count()
+    val indentCount = rawContent.takeWhile { it.isWhitespace() }.count()
 
     var contentRange: Range? = null
     var commentRange: Range? = null
@@ -57,13 +57,13 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
 
             //Compute range for content and comment
             contentRange =
-                pos(indentLength + linePatternMatcher.start(1))..pos(indentLength + linePatternMatcher.end(1) - (originalContent.length - content.length))
+                pos(indentCount + linePatternMatcher.start(1))..pos(indentCount + linePatternMatcher.end(1) - (originalContent.length - content.length))
             commentRange =
-                pos(indentLength + linePatternMatcher.start(2))..pos(indentLength + linePatternMatcher.end(2))
+                pos(indentCount + linePatternMatcher.start(2))..pos(indentCount + linePatternMatcher.end(2))
         } else {
             //No comment. Default to un-indented raw content and no comment
             content = unIndentedRawContent.trimEnd()
-            contentRange = pos(indentLength)..pos(indentLength + content.length)
+            contentRange = pos(indentCount)..pos(indentCount + content.length)
             commentRange = contentRange!!.end..contentRange!!.end
         }
     }

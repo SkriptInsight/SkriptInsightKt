@@ -3,10 +3,8 @@ package io.github.skriptinsight.file
 import io.github.skriptinsight.file.node.SkriptNode
 
 fun computeNodeDataParents(nodeData: MutableCollection<SkriptNode>) {
-    val firstIndent = nodeData.firstOrNull()?.indentCount ?: 0
-
     // Compute indentation levels
-    val indentationLevels = computeIndentationLevelsForNode(nodeData, firstIndent)
+    val indentationLevels = computeIndentationLevelsForNode(nodeData)
 
     indentationLevels.forEach { currentLevel ->
         nodeData.forEachIndexed { index, node ->
@@ -23,10 +21,11 @@ fun computeNodeDataParents(nodeData: MutableCollection<SkriptNode>) {
     }
 }
 
-private fun computeIndentationLevelsForNode(
-    nodeData: MutableCollection<SkriptNode>,
-    firstIndent: Int
+fun computeIndentationLevelsForNode(
+    nodeData: MutableCollection<SkriptNode>
 ): List<Int> {
+    val firstIndent = nodeData.firstOrNull()?.indentCount ?: 0
+
     return nodeData
         // First, take all the nodes that are the same indent or are a child of the first indent
         .takeWhile { it.indentCount == firstIndent || it.isChildrenAccordingToIndent(firstIndent) }
