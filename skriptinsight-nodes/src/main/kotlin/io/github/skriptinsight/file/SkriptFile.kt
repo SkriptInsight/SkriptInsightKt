@@ -3,6 +3,7 @@ package io.github.skriptinsight.file
 import io.github.skriptinsight.file.node.SkriptNode
 import java.io.File
 import java.net.URI
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -20,10 +21,10 @@ class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
     companion object {
         private fun fromText(url: URI, lines: List<String>): SkriptFile {
             return SkriptFile(
-                    url,
-                    ConcurrentHashMap<Int, SkriptNode>().apply {
-                        lines.forEachIndexed { i, it -> this[i] = SkriptNode.fromLine(i, it) }
-                    }
+                url,
+                ConcurrentHashMap<Int, SkriptNode>().apply {
+                    lines.forEachIndexed { i, it -> this[i] = SkriptNode.fromLine(i, it) }
+                }
             )
         }
 
@@ -31,8 +32,16 @@ class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
             return fromText(url, File(url).readLines())
         }
 
+        fun fromFile(file: File): SkriptFile {
+            return fromText(file.toURI(), file.readLines())
+        }
+
         fun fromText(url: URI, text: String): SkriptFile {
             return fromText(url, text.lines())
+        }
+
+        fun fromText(text: String): SkriptFile {
+            return fromText(URI("file://${UUID.randomUUID()}"), text.lines())
         }
 
     }

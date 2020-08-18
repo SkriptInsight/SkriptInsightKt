@@ -5,6 +5,7 @@ import io.github.skriptinsight.file.location.substring
 import io.github.skriptinsight.file.node.SkriptNode
 import io.github.skriptinsight.file.node.indentation.IndentationType
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import java.net.URI
@@ -37,6 +38,14 @@ class SkriptNodeTests {
     fun `SkriptNode is section node`() {
         val file = SkriptNode.fromLine(0, "    section node:     # bruh moment")
         assert(file.isSectionNode)
+    }
+
+
+    @Test
+    fun `SkriptFile can be created from text`() {
+        assertDoesNotThrow {
+            SkriptFile.fromText("section node:     # bruh moment")
+        }
     }
 
     @ParameterizedTest
