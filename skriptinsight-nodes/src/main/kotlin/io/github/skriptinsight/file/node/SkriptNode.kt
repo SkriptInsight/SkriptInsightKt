@@ -70,10 +70,23 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
 
     val isSectionNode: Boolean = content.endsWith(":")
 
+    private var _parent: SkriptNode? = null
+
     /**
      * The parent of this node.
      */
-    var parent: SkriptNode? = null
+    var parent: SkriptNode?
+        get() = _parent
+        set(value) {
+            //Remove from old parent
+            _parent?.children?.remove(this)
+            //Add to new parent
+            value?.children?.add(this)
+
+            _parent = value
+        }
+
+    var children: MutableList<SkriptNode>? = mutableListOf()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

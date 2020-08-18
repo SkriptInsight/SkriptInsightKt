@@ -8,6 +8,19 @@ fun computeNodeDataParents(nodeData: MutableCollection<SkriptNode>) {
     // Compute indentation levels
     val indentationLevels = computeIndentationLevelsForNode(nodeData, firstIndent)
 
+    indentationLevels.forEach { currentLevel ->
+        nodeData.forEachIndexed { index, node ->
+            if (node.isSectionNode && node.isOnSameIndentLevel(currentLevel)) {
+                //Compute all child nodes
+                val childrenNodes = nodeData.drop(index + 1).takeWhile { it.isChildrenAccordingToIndent(currentLevel) }
+
+                childrenNodes.forEach { child ->
+                    //Set node as parent of the child
+                    child.parent = node
+                }
+            }
+        }
+    }
 }
 
 private fun computeIndentationLevelsForNode(
@@ -27,6 +40,12 @@ private fun computeIndentationLevelsForNode(
             //Insert level zero
             add(0, 0)
         }
+}
+
+private fun SkriptNode.isOnSameIndentLevel(currentLevel: Int): Boolean {
+    if (indentations.isEmpty() && currentLevel == 0) return true
+
+    return indentCount == currentLevel
 }
 
 private fun SkriptNode.isChildrenAccordingToIndent(indent: Int): Boolean {

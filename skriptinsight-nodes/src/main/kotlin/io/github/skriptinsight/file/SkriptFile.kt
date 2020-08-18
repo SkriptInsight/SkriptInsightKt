@@ -46,6 +46,11 @@ class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
 
     }
 
+    /**
+     * Computes the root nodes (aka the nodes without parents)
+     */
+    val rootNodes
+    get() = nodes.values.filter { it.parent == null }
 
     operator fun get(index: Int): SkriptNode? {
         return nodes[index]
