@@ -19,6 +19,8 @@ subprojects {
 
     dependencies {
         implementation(kotlin("stdlib"))
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+        implementation("com.github.akarnokd:kotlin-flow-extensions:0.0.5")
         testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
     }
 
@@ -31,7 +33,10 @@ subprojects {
 
     // config JVM target to 11 for kotlin compilation tasks
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.apply {
+            jvmTarget = "11"
+            freeCompilerArgs = freeCompilerArgs + listOf("-Xopt-in=kotlinx.coroutines.FlowPreview")
+        }
     }
 
 }

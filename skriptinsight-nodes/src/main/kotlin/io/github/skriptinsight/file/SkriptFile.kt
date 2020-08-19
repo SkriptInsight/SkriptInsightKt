@@ -1,6 +1,9 @@
 package io.github.skriptinsight.file
 
 import io.github.skriptinsight.file.node.SkriptNode
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
 import java.io.File
 import java.net.URI
 import java.util.*
@@ -15,7 +18,6 @@ import java.util.concurrent.ConcurrentMap
  */
 class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
     init {
-        computeNodeDataParents(nodes.values)
     }
 
     companion object {
