@@ -15,13 +15,6 @@ fun SkriptFile.printStructuralTree(): String {
     }
 }
 
-fun main() {
-    println(
-        SkriptFile.fromFile(File("D:\\SkriptInsightKtServer\\plugins\\Skript\\scripts\\-homes.sk"))
-            .printStructuralTree()
-    )
-}
-
 private fun SkriptNode.printNodeChildren(sb: StringBuilder, indentationLevels: List<Int>) {
     sb.apply {
         val parentSpace = parent?.normalizedIndentCount?.plus(1) ?: 0
