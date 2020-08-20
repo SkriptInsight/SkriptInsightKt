@@ -20,7 +20,6 @@ subprojects {
     dependencies {
         implementation(kotlin("stdlib"))
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-        implementation("com.github.akarnokd:kotlin-flow-extensions:0.0.5")
         testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
     }
 

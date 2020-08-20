@@ -1,11 +1,9 @@
 package io.github.skriptinsight.tests
 
 import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.file.computeNodeDataParents
 import io.github.skriptinsight.file.location.substring
 import io.github.skriptinsight.file.node.SkriptNode
 import io.github.skriptinsight.file.node.indentation.IndentationType
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -29,32 +27,32 @@ class SkriptNodeTests {
 
     @Test
     fun `SkriptNode has correct parent`() {
-        val file = SkriptFile.fromText(
-            fileUrl, """
+        runBlocking {
+            val file = SkriptFile.fromTextSuspend(
+                fileUrl, """
             on chat:
                 send "hi"
                 if true:
                     send "hi 2"
         """.trimIndent()
-        )
+            )
 
-        runBlocking { computeNodeDataParents(file.nodes.values.asFlow()) }
+            assert(file.rootNodes.size == 1)
+            assert(file[0]?.parent == null)
+            assert(file[1]?.parent != null)
+            assert(file[2]?.parent != null)
+            assert(file[3]?.parent != null)
 
-        assert(file.rootNodes.size == 1)
-        assert(file[0]?.parent == null)
-        assert(file[1]?.parent != null)
-        assert(file[2]?.parent != null)
-        assert(file[3]?.parent != null)
+            assert(file[0]?.children?.isNotEmpty() ?: false)
+            assert(file[1]?.children?.isNullOrEmpty() ?: false)
+            assert(file[2]?.children?.isNotEmpty() ?: false)
+            assert(file[3]?.children?.isNullOrEmpty() ?: false)
 
-        assert(file[0]?.children?.isNotEmpty() ?: false)
-        assert(file[1]?.children?.isNullOrEmpty() ?: false)
-        assert(file[2]?.children?.isNotEmpty() ?: false)
-        assert(file[3]?.children?.isNullOrEmpty() ?: false)
+            assert(file[0]?.children?.get(0) == file[1])
 
-        assert(file[0]?.children?.get(0) == file[1])
-
-        assert(file[3]?.parent != file[0])
-        assert(file[3]?.parent == file[2])
+            assert(file[3]?.parent != file[0])
+            assert(file[3]?.parent == file[2])
+        }
     }
 
     @Test
@@ -67,7 +65,9 @@ class SkriptNodeTests {
     @Test
     fun `SkriptFile can be created from text`() {
         assertDoesNotThrow {
-            SkriptFile.fromText("section node:     # bruh moment")
+            runBlocking {
+                SkriptFile.fromTextSuspend("section node:     # bruh moment")
+            }
         }
     }
 

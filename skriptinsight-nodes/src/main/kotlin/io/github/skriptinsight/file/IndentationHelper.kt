@@ -1,11 +1,7 @@
 package io.github.skriptinsight.file
 
-import hu.akarnokd.kotlin.flow.groupBy
 import io.github.skriptinsight.file.node.SkriptNode
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlin.coroutines.suspendCoroutine
 
 suspend fun computeNodeDataParents(nodeData: Flow<SkriptNode>) {
     // Compute indentation levels
@@ -24,7 +20,6 @@ suspend fun computeNodeDataParents(nodeData: Flow<SkriptNode>) {
             }
         }
     }
-
 }
 
 suspend fun computeIndentationLevelsForNode(
@@ -33,6 +28,7 @@ suspend fun computeIndentationLevelsForNode(
     val firstIndent = nodeData.firstOrNull()?.indentCount ?: 0
 
     return flow {
+        //Emit default zero value
         emit(0)
 
         emitAll(nodeData
@@ -41,12 +37,14 @@ suspend fun computeIndentationLevelsForNode(
             // Then, select all indentations
             .flatMapConcat { it.indentations.asFlow() }
             // Now, group by the amount of indentations
-            .groupBy { it.amount }
-            // Return the key of the group (aka the amount)
-            .map { it.key }
-        )
+            .collectAndGroupBy { it.amount }
+            // Return the key f the group (aka the amount)
+            .map { it.key })
     }
 }
+
+private suspend fun <T, R> Flow<T>.collectAndGroupBy(keySelector: (T) -> R): Flow<Map.Entry<R, List<T>>> = toList(mutableListOf())
+    .groupBy(keySelector).asIterable().asFlow()
 
 private fun SkriptNode.isOnSameIndentLevel(currentLevel: Int): Boolean {
     if (indentations.isEmpty() && currentLevel == 0) return true
