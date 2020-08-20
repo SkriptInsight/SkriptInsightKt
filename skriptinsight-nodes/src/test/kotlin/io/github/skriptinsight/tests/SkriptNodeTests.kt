@@ -1,12 +1,9 @@
 package io.github.skriptinsight.tests
 
 import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.file.computeNodeDataParents
 import io.github.skriptinsight.file.location.substring
 import io.github.skriptinsight.file.node.SkriptNode
 import io.github.skriptinsight.file.node.indentation.IndentationType
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -37,8 +34,6 @@ class SkriptNodeTests {
                     send "hi 2"
         """.trimIndent()
         )
-
-        runBlocking { computeNodeDataParents(file.nodes.values.asFlow()) }
 
         assert(file.rootNodes.size == 1)
         assert(file[0]?.parent == null)
