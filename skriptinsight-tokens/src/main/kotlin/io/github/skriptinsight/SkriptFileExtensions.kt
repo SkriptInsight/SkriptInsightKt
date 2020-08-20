@@ -3,19 +3,19 @@ package io.github.skriptinsight
 import io.github.skriptinsight.file.SkriptFile
 import io.github.skriptinsight.file.computeIndentationLevelsForNode
 import io.github.skriptinsight.file.node.SkriptNode
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import java.io.File
 
-suspend fun SkriptFile.printStructuralTree(): String {
+fun SkriptFile.printStructuralTree(): String {
     return buildString {
         val fileRootNodes = rootNodes
+        val indentationLevels =
+            computeIndentationLevelsForNode(nodes.values)
 
-        fileRootNodes.forEach { it.printNodeChildren(this) }
+        fileRootNodes.forEach { it.printNodeChildren(this, indentationLevels) }
     }
 }
 
-private fun SkriptNode.printNodeChildren(sb: StringBuilder) {
+private fun SkriptNode.printNodeChildren(sb: StringBuilder, indentationLevels: List<Int>) {
     sb.apply {
         val parentSpace = parent?.normalizedIndentCount?.plus(1) ?: 0
         append(" ".repeat(parentSpace))
@@ -29,6 +29,6 @@ private fun SkriptNode.printNodeChildren(sb: StringBuilder) {
         append(comment)
         append(System.lineSeparator())
 
-        children?.forEach { it.printNodeChildren(this) }
+        children?.forEach { it.printNodeChildren(this, indentationLevels) }
     }
 }
