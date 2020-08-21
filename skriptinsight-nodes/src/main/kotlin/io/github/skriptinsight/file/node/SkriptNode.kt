@@ -1,9 +1,11 @@
 package io.github.skriptinsight.file.node
 
+import io.github.skriptinsight.file.extensions.getGroupRange
 import io.github.skriptinsight.file.linePattern
 import io.github.skriptinsight.file.location.Position
 import io.github.skriptinsight.file.location.Range
 import io.github.skriptinsight.file.node.indentation.NodeIndentationData
+import java.util.regex.Matcher
 
 /**
  * Represents a line from a [Skript file][io.github.skriptinsight.file.SkriptFile].
@@ -56,10 +58,9 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
             comment = linePatternMatcher.group(2)
 
             //Compute range for content and comment
-            contentRange =
-                pos(indentCount + linePatternMatcher.start(1))..pos(indentCount + linePatternMatcher.end(1) - (originalContent.length - content.length))
-            commentRange =
-                pos(indentCount + linePatternMatcher.start(2))..pos(indentCount + linePatternMatcher.end(2))
+            val trimmedCharsAmount = originalContent.length - content.length
+            contentRange = groupRange(linePatternMatcher, 1, indentCount, offsetEnd = indentCount - trimmedCharsAmount)
+            commentRange = groupRange(linePatternMatcher, 2, indentCount)
         } else {
             //No comment. Default to un-indented raw content and no comment
             content = unIndentedRawContent.trimEnd()
@@ -108,5 +109,8 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
 
     private fun pos(column: Int): Position {
         return Position(lineNumber, column)
+    }
+    private fun groupRange(matcher: Matcher, group: Int, offsetStart: Int = 0, offsetEnd: Int = offsetStart): Range {
+        return matcher.getGroupRange(group, offsetStart, offsetEnd, lineNumber)
     }
 }
