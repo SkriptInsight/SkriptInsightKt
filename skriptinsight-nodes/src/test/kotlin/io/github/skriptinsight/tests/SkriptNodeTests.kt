@@ -1,7 +1,7 @@
 package io.github.skriptinsight.tests
 
 import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.file.location.substring
+import io.github.skriptinsight.editing.location.substring
 import io.github.skriptinsight.file.node.SkriptNode
 import io.github.skriptinsight.file.node.indentation.IndentationType
 import org.junit.jupiter.api.Test

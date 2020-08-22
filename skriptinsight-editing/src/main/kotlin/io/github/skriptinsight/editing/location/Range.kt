@@ -1,4 +1,4 @@
-package io.github.skriptinsight.file.location
+package io.github.skriptinsight.editing.location
 
 /**
  * Represents a range of zero-indexed positions in a character sequence.
