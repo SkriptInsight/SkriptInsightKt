@@ -56,5 +56,12 @@ class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
         return nodes[index]
     }
 
+    fun <R> runProcess(process: SkriptFileProcess<R>): List<R> {
+        val map = nodes.map {
+            FileProcessCallable(process, this, it.key, it.value.rawContent, it.value)
+        }
+        return ForkJoinPool.commonPool().invokeAll(map).map { it.get() }
+    }
+
 }
 
