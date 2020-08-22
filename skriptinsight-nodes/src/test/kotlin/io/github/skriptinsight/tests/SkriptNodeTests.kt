@@ -25,7 +25,7 @@ class SkriptNodeTests {
     }
 
     @Test
-    fun `SkriptNode has correct parent`() {
+    fun `SkriptNode has correct parent and children`() {
         val file = SkriptFile.fromText(
             fileUrl, """
             on chat:
