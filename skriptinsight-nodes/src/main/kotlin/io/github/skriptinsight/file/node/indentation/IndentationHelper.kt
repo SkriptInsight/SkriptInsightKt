@@ -1,23 +1,14 @@
-package io.github.skriptinsight.file
+package io.github.skriptinsight.file.node.indentation
 
+import io.github.skriptinsight.file.SkriptFile
 import io.github.skriptinsight.file.node.SkriptNode
 
-fun computeNodeDataParents(nodeData: MutableCollection<SkriptNode>) {
+fun computeNodeDataParents(file: SkriptFile) {
     // Compute indentation levels
-    val indentationLevels = computeIndentationLevelsForNode(nodeData)
+    val indentationLevels = computeIndentationLevelsForNode(file.nodes.values)
 
-    indentationLevels.forEach { currentLevel ->
-        nodeData.forEachIndexed { index, node ->
-            if (node.isSectionNode && node.isOnSameIndentLevel(currentLevel)) {
-                //Compute all child nodes
-                val childrenNodes = nodeData.drop(index + 1).takeWhile { it.isChildrenAccordingToIndent(currentLevel) }
-
-                childrenNodes.forEach { child ->
-                    //Set node as parent of the child
-                    child.parent = node
-                }
-            }
-        }
+    indentationLevels.forEach {
+        file.runProcess(ComputeNodeDataParentAndChildrenProcess(it))
     }
 }
 
@@ -41,12 +32,12 @@ fun computeIndentationLevelsForNode(
         }
 }
 
-private fun SkriptNode.isOnSameIndentLevel(currentLevel: Int): Boolean {
+fun SkriptNode.isOnSameIndentLevel(currentLevel: Int): Boolean {
     if (indentations.isEmpty() && currentLevel == 0) return true
 
     return indentCount == currentLevel
 }
 
-private fun SkriptNode.isChildrenAccordingToIndent(indent: Int): Boolean {
+internal fun SkriptNode.isChildrenAccordingToIndent(indent: Int): Boolean {
     return this.indentCount > indent //TODO: || node is EmptyLineNode || node is CommentLineNode
 }

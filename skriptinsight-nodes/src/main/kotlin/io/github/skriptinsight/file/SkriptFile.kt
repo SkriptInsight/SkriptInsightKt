@@ -1,11 +1,15 @@
 package io.github.skriptinsight.file
 
+import io.github.skriptinsight.editing.work.FileProcessCallable
 import io.github.skriptinsight.file.node.SkriptNode
+import io.github.skriptinsight.file.node.indentation.computeNodeDataParents
+import io.github.skriptinsight.file.work.SkriptFileProcess
 import java.io.File
 import java.net.URI
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import java.util.concurrent.ForkJoinPool
 
 /**
  * Represents a **Skript file**.
@@ -15,7 +19,7 @@ import java.util.concurrent.ConcurrentMap
  */
 class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
     init {
-        computeNodeDataParents(nodes.values)
+        computeNodeDataParents(this)
     }
 
     companion object {
@@ -50,7 +54,7 @@ class SkriptFile(val url: URI, val nodes: ConcurrentMap<Int, SkriptNode>) {
      * Computes the root nodes (aka the nodes without parents)
      */
     val rootNodes
-    get() = nodes.values.filter { it.parent == null }
+        get() = nodes.values.filter { it.parent == null }
 
     operator fun get(index: Int): SkriptNode? {
         return nodes[index]

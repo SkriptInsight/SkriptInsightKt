@@ -1,9 +1,8 @@
 package io.github.skriptinsight
 
 import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.file.computeIndentationLevelsForNode
+import io.github.skriptinsight.file.node.indentation.computeIndentationLevelsForNode
 import io.github.skriptinsight.file.node.SkriptNode
-import java.io.File
 
 fun SkriptFile.printStructuralTree(): String {
     return buildString {
