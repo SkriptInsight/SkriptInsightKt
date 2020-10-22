@@ -20,4 +20,6 @@ const val wildcard = "[^\"]*?(?:\"[^\"]*?\"[^\"]*?)*?"
 @Language("regexp")
 const val stringMatcher = "\"[^\"]*?(?:\"\"[^\"]*)*?\""
 
+val whitespacePattern = Pattern.compile("\\s+")
+
 val argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*($wildcard))?\\s*>")
