@@ -33,7 +33,6 @@ private fun SkriptNode.printNodeChildren(sb: StringBuilder, indentationLevels: L
     }
 }
 
-@Suppress("INVISIBLE_MEMBER")
 var SkriptFile.tokenizedModel: TokenizedModel
     get() {
         return this[this::tokenizedModel] ?: TokenizedModel(this).also { tokenizedModel = it }
