@@ -4,7 +4,7 @@ import io.github.skriptinsight.editing.location.Range
 import io.github.skriptinsight.file.SkriptFile
 
 /**
- * Represents a token on a Skript file.
+ * Represents a token on a Skript io.github.skriptinsight.file.
  *
  * @param T The type value of this token
  */

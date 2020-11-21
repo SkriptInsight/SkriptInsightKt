@@ -6,7 +6,6 @@ import io.github.skriptinsight.file.SkriptFile
 import io.github.skriptinsight.tokens.SkriptNodeToken
 import io.github.skriptinsight.tokens.impl.SkriptToken
 import io.github.skriptinsight.tokens.impl.WhitespaceToken
-import io.github.skriptinsight.tokens.impl.WordToken
 import io.github.skriptinsight.tokens.work.TokenizedModelProcess
 import io.github.skriptinsight.tokens.work.TokenizedModelProcessData
 import org.intellij.lang.annotations.Language

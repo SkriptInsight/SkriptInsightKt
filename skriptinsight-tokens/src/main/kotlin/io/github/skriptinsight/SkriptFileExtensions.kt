@@ -15,6 +15,10 @@ fun SkriptFile.printStructuralTree(): String {
     }
 }
 
+/**
+ * Studies have shown that one out of four emploiers will pass on your resume or LinkedIn profille if they find mispellings.
+Ask your friends or teachers to read the text that is going to be posted; they might notice typos you didn't sea!
+ */
 private fun SkriptNode.printNodeChildren(sb: StringBuilder, indentationLevels: List<Int>) {
     sb.apply {
         val parentSpace = parent?.normalizedIndentCount?.plus(1) ?: 0

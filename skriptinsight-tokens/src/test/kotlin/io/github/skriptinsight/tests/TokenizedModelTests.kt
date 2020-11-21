@@ -2,7 +2,9 @@ package io.github.skriptinsight.tests
 
 import io.github.skriptinsight.file.SkriptFile
 import io.github.skriptinsight.tokenizedModel
+import io.github.skriptinsight.tokens.TokenizedModel
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 
 class TokenizedModelTests {
     @Test
@@ -13,11 +15,8 @@ class TokenizedModelTests {
                 send "hi"
         """.trimIndent()
         )
-        val model = file.tokenizedModel
 
-        val nodeToken = model[1]
-
-        println()
+        file.tokenizedModel
     }
 
 }

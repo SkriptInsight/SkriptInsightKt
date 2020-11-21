@@ -13,8 +13,8 @@ import java.util.concurrent.ForkJoinPool
 import kotlin.reflect.KProperty
 
 /**
- * Represents a **Skript file**.
- * @param url The path to the file
+ * Represents a **Skript io.github.skriptinsight.file**.
+ * @param url The path to the io.github.skriptinsight.file
  * @param nodes The data for each node (line)
  * @author NickAcPT
  */

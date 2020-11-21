@@ -1,4 +1,3 @@
 rootProject.name = "SkriptInsightKt"
-include("skriptinsight-editing")
-include("skriptinsight-nodes")
+include("skriptinsight-core")
 include("skriptinsight-tokens")

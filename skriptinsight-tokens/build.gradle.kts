@@ -1,4 +1,3 @@
 dependencies {
-    implementation(project(":skriptinsight-editing"))
-    implementation(project(":skriptinsight-nodes"))
+    implementation(project(":skriptinsight-core"))
 }
