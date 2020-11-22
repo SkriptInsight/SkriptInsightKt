@@ -18,7 +18,7 @@ val commandPattern = Pattern.compile("(?i)^command /?(\\S+)\\s*(\\s+(.+))?$")
 const val wildcard = "[^\"]*?(?:\"[^\"]*?\"[^\"]*?)*?"
 
 @Language("regexp")
-const val stringMatcher = "\"[^\"]*?(?:\"\"[^\"]*)*?\""
+const val stringPattern = "\"([^\"]*?(?:\"\"[^\"]*)*)\""
 
 val whitespacePattern = Pattern.compile("\\s+")
 

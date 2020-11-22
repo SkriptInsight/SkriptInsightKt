@@ -1,9 +1,9 @@
 package io.github.skriptinsight.editing.work
 
 /**
- * Represents an abstract io.github.skriptinsight.file process.
+ * Represents an abstract file process.
  *
- * @param F The type of the io.github.skriptinsight.file to run the process on
+ * @param F The type of the file to run the process on
  * @param R The return type of the process
  * @param C The context (or Unit) for the process
  */

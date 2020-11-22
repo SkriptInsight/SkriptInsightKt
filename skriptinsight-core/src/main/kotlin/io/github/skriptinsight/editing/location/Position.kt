@@ -37,6 +37,12 @@ data class Position(val lineNumber: Int, val column: Int) {
 
         return charsUntilLine
     }
+
+    operator fun compareTo(other: Position): Int {
+        if (this == other) return 0
+        val lineComparison = this.lineNumber.compareTo(other.lineNumber)
+        return if (lineComparison != 0) lineComparison else column.compareTo(other.column)
+    }
 }
 
 fun String.substring(position: Position): String {

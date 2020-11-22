@@ -11,7 +11,7 @@ class TokenizedModel(val file: SkriptFile) {
     init {
         tokens.putAll(
             runProcess(NodeTokenizeProcess)
-                .map { it.node.lineNumber to SkriptNodeToken(it.node, it.tokens) }
+                .map { it.node.lineNumber to SkriptNodeToken(it.node, it.tokens.sortedBy { t -> t.range.start.column }.toMutableList()) }
         )
     }
 

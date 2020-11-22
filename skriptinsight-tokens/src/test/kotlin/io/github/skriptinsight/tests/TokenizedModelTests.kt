@@ -12,11 +12,14 @@ class TokenizedModelTests {
         val file = SkriptFile.fromText(
             """
             on join:
-                send "hi"
+                send "hello world"
         """.trimIndent()
         )
 
-        file.tokenizedModel
+        val tokenizedModel = file.tokenizedModel
+
+        val tokenizedNode = tokenizedModel[1]
+        println()
     }
 
 }

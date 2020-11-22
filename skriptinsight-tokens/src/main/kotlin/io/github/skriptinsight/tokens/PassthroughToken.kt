@@ -1,4 +1,4 @@
-package io.github.skriptinsight.tokens.impl
+package io.github.skriptinsight.tokens
 
 import io.github.skriptinsight.editing.location.Range
 import io.github.skriptinsight.file.SkriptFile

@@ -8,7 +8,7 @@ import io.github.skriptinsight.file.node.indentation.NodeIndentationData
 import java.util.regex.Matcher
 
 /**
- * Represents a line from a [Skript io.github.skriptinsight.file][io.github.skriptinsight.file.SkriptFile].
+ * Represents a line from a [Skript file][file.SkriptFile].
  *
  * @param lineNumber The number of this node.
  * @param rawContent The raw content of this node.

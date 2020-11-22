@@ -3,8 +3,10 @@ package io.github.skriptinsight.tokens.work.impl
 import io.github.skriptinsight.editing.extensions.getGroupRange
 import io.github.skriptinsight.editing.location.Range
 import io.github.skriptinsight.file.SkriptFile
+import io.github.skriptinsight.file.stringPattern
 import io.github.skriptinsight.tokens.SkriptNodeToken
-import io.github.skriptinsight.tokens.impl.SkriptToken
+import io.github.skriptinsight.tokens.SkriptToken
+import io.github.skriptinsight.tokens.impl.StringToken
 import io.github.skriptinsight.tokens.impl.WhitespaceToken
 import io.github.skriptinsight.tokens.work.TokenizedModelProcess
 import io.github.skriptinsight.tokens.work.TokenizedModelProcessData
@@ -31,6 +33,10 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
     }
 
     init {
+        token<StringToken>(stringPattern) { skriptFile, range, rawContent, matchResult ->
+            StringToken(matchResult.group(1), range, rawContent, skriptFile)
+        }
+
         token<WhitespaceToken>("\\s") { skriptFile, range, rawContent, _ ->
             WhitespaceToken(range, rawContent, skriptFile)
         }
@@ -47,20 +53,23 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
         val node = file[lineNumber] ?: return outToken
         val content = node.content
 
-        var lastPos = 0
         tokenDefinitions.forEach { (pattern, tokenComputeInstance) ->
 
             val matcher = pattern.matcher(content)
 
             while (matcher.find()) {
-                tokens.add(
-                    tokenComputeInstance.invoke(
-                        file,
-                        matcher.getGroupRange(matcher.groupCount(), node.indentCount, lineNumber),
-                        matcher.group(),
-                        matcher.toMatchResult()
+                val matchRange = matcher.getGroupRange(matcher.groupCount(), node.indentCount, lineNumber)
+                //If this node isn't within a previously matched token, add it
+                if (tokens.none { t -> matchRange.isWithin(t.range) }) {
+                    tokens.add(
+                        tokenComputeInstance.invoke(
+                            file,
+                            matchRange,
+                            matcher.group(),
+                            matcher.toMatchResult()
+                        )
                     )
-                )
+                }
             }
         }
 
