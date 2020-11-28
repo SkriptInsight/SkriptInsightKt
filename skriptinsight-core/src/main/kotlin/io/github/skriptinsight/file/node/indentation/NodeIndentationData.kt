@@ -5,14 +5,13 @@ data class NodeIndentationData(val type: IndentationType, val amount: Int) {
         @JvmStatic
         fun fromIndentation(takeWhile: String): Array<NodeIndentationData> {
             return takeWhile.groupBy { it }
-                    .map {
-                        NodeIndentationData(
-                                IndentationType.fromCharacter(
-                                        it.key),
-                                it.value.size
-                        )
-                    }
-                    .toTypedArray()
+                .map {
+                    NodeIndentationData(
+                        IndentationType.fromCharacter(it.key),
+                        it.value.size
+                    )
+                }
+                .toTypedArray()
         }
     }
 

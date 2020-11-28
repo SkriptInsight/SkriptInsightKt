@@ -8,8 +8,21 @@ package io.github.skriptinsight.editing.location
  * @author NickAcPT
  */
 data class Range(val start: Position, val end: Position) {
-    fun isWithin(other: Range): Boolean {
-        return start >= other.start && end <= other.end
+
+    /**
+     * Checks whether [other] [Range] is within this [Range].
+     * @return true if [other] [Range] is inside this [Range], false otherwise
+     */
+    fun contains(other: Range): Boolean {
+        return other.start >= start && other.end <= end
+    }
+
+    /**
+     * Checks whether [other] [Position] is within this [Range].
+     * @return true if [other] [Position] is inside this [Range], false otherwise
+     */
+    fun contains(other: Position): Boolean {
+        return other >= start  && other <= end
     }
 }
 

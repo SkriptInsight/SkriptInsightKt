@@ -12,7 +12,6 @@ import io.github.skriptinsight.tokens.SkriptToken
  */
 class StringToken(innerValue: String, range: Range, rawContents: String, file: SkriptFile) : SkriptToken<String>(range, rawContents, file, unescapeString(innerValue)) {
     companion object {
-
         private fun unescapeString(value: String): String {
             return value.replace("\"\"", "\"")
         }

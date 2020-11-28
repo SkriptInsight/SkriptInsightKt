@@ -1,14 +1,16 @@
 package io.github.skriptinsight.file.node
 
+import io.github.skriptinsight.SyntaxFacts.linePattern
 import io.github.skriptinsight.editing.extensions.getGroupRange
-import io.github.skriptinsight.file.linePattern
 import io.github.skriptinsight.editing.location.Position
 import io.github.skriptinsight.editing.location.Range
+import io.github.skriptinsight.file.SkriptFile
 import io.github.skriptinsight.file.node.indentation.NodeIndentationData
 import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
- * Represents a line from a [Skript file][file.SkriptFile].
+ * Represents a line from a [Skript file][SkriptFile].
  *
  * @param lineNumber The number of this node.
  * @param rawContent The raw content of this node.
@@ -16,7 +18,11 @@ import java.util.regex.Matcher
  * @author NickAcPT
  */
 data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentations: Array<NodeIndentationData>) {
+
     companion object {
+
+        val linePatternRegex: Pattern = Pattern.compile(linePattern)
+
         @JvmStatic
         fun fromLine(lineNumber: Int, content: String): SkriptNode {
             return SkriptNode(
@@ -49,11 +55,10 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     var comment: String = ""
 
     init {
-        val linePatternMatcher = linePattern.matcher(unIndentedRawContent)
+        val linePatternMatcher = linePatternRegex.matcher(unIndentedRawContent)
         // Check if line has a comment
         if (linePatternMatcher.matches()) {
-            //Replacement is required because of the 'double-escape' on the comment char
-            val originalContent = linePatternMatcher.group(1).replace("##", "#")
+            val originalContent = linePatternMatcher.group(1)
             content = originalContent.trimEnd()
             comment = linePatternMatcher.group(2)
 
@@ -110,6 +115,7 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     private fun pos(column: Int): Position {
         return Position(lineNumber, column)
     }
+
     private fun groupRange(matcher: Matcher, group: Int, offsetStart: Int = 0, offsetEnd: Int = offsetStart): Range {
         return matcher.getGroupRange(group, offsetStart, offsetEnd, lineNumber)
     }

@@ -5,6 +5,9 @@ import org.intellij.lang.annotations.Language
 object SyntaxFacts {
 
     @Language("Regexp")
+    const val linePattern = ("^((?:[^#]|##)*)(\\s*#(?!#).*)$")
+
+    @Language("Regexp")
     const val wildcard = "[^\"]*?(?:\"[^\"]*?\"[^\"]*?)*?"
 
     @Language("Regexp")
@@ -12,9 +15,6 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val whitespaceRegex = "\\s"
-
-    @Language("Regexp")
-    val stringRegex = "\\s"
 
     @Language("Regexp")
     const val functionNameRegex = "[\\p{IsAlphabetic}][\\p{IsAlphabetic}\\p{IsDigit}_]*"
@@ -40,7 +40,6 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val lineRegex = "^((?:[^#]|##)*)(\\s*#(?!#).*)$"
-
 
     @Language("Regexp")
     val listSplitRegex = ("\\s*,?\\s+(and|n?or)\\s+|\\s*,\\s*")

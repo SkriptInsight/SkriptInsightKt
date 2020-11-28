@@ -1,9 +1,10 @@
 package io.github.skriptinsight.tokens.work.impl
 
+import io.github.skriptinsight.SyntaxFacts.stringMatcher
+import io.github.skriptinsight.SyntaxFacts.whitespaceRegex
 import io.github.skriptinsight.editing.extensions.getGroupRange
 import io.github.skriptinsight.editing.location.Range
 import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.file.stringPattern
 import io.github.skriptinsight.tokens.SkriptNodeToken
 import io.github.skriptinsight.tokens.SkriptToken
 import io.github.skriptinsight.tokens.impl.StringToken
@@ -33,11 +34,10 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
     }
 
     init {
-        token<StringToken>(stringPattern) { skriptFile, range, rawContent, matchResult ->
+        token<StringToken>(stringMatcher) { skriptFile, range, rawContent, matchResult ->
             StringToken(matchResult.group(1), range, rawContent, skriptFile)
         }
-
-        token<WhitespaceToken>("\\s") { skriptFile, range, rawContent, _ ->
+        token<WhitespaceToken>(whitespaceRegex) { skriptFile, range, rawContent, _ ->
             WhitespaceToken(range, rawContent, skriptFile)
         }
     }
@@ -51,7 +51,7 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
         val tokens = mutableListOf<SkriptToken<*>>()
         val outToken = SkriptNodeToken(context.node, tokens)
         val node = file[lineNumber] ?: return outToken
-        val content = node.content
+        val content = node.rawContent
 
         tokenDefinitions.forEach { (pattern, tokenComputeInstance) ->
 
@@ -60,7 +60,7 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
             while (matcher.find()) {
                 val matchRange = matcher.getGroupRange(matcher.groupCount(), node.indentCount, lineNumber)
                 //If this node isn't within a previously matched token, add it
-                if (tokens.none { t -> matchRange.isWithin(t.range) }) {
+                if (tokens.none { t -> t.range.contains(matchRange) }) {
                     tokens.add(
                         tokenComputeInstance.invoke(
                             file,
@@ -72,7 +72,6 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
                 }
             }
         }
-
 
         return outToken
     }
