@@ -19,10 +19,7 @@ class TokenizedModel(val file: SkriptFile) {
         return file.runProcess(process)
     }
 
-
     operator fun get(lineNumber: Int): SkriptNodeToken? {
         return tokens[lineNumber]
     }
-
-
 }

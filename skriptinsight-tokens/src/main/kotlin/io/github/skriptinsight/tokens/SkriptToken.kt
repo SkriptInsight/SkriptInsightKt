@@ -6,14 +6,22 @@ import io.github.skriptinsight.file.SkriptFile
 /**
  * Represents a token on a Skript file.
  *
- * @param T The type value of this token
- * @param file The file associated with this token
- * @param range The range of this token on the original file
- * @param rawContents The raw contents of this token
- * @param value The [T] value of this node.
+ * @property file The file associated with this token
+ * @property range The range of this token on the original file
+ * @property rawContents The raw contents of this token
  * @author NickAcPT
  */
-abstract class SkriptToken<T>(val range: Range, val rawContents: String, val file: SkriptFile, val value: T) {
-    abstract fun render(): String
-}
+abstract class SkriptToken {
 
+    lateinit var range: Range
+    lateinit var rawContents: String
+    lateinit var file: SkriptFile
+
+    abstract fun render(): String
+
+    internal fun setupToken(range: Range, rawContents: String, file: SkriptFile) {
+        this.range = range
+        this.rawContents = rawContents
+        this.file = file
+    }
+}

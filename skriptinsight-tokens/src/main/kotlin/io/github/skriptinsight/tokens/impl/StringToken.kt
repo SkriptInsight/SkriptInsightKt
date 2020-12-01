@@ -1,8 +1,6 @@
 package io.github.skriptinsight.tokens.impl
 
-import io.github.skriptinsight.editing.location.Range
-import io.github.skriptinsight.file.SkriptFile
-import io.github.skriptinsight.tokens.SkriptToken
+import io.github.skriptinsight.tokens.TypedSkriptToken
 
 /**
  * Represents a string on a Skript file
@@ -10,11 +8,13 @@ import io.github.skriptinsight.tokens.SkriptToken
  * @param innerValue The inner value of a string (the contents)
  * @author NickAcPT
  */
-class StringToken(innerValue: String, range: Range, rawContents: String, file: SkriptFile) : SkriptToken<String>(range, rawContents, file, unescapeString(innerValue)) {
+class StringToken(value: String) : TypedSkriptToken<String>(unescapeString(value)) {
+
     companion object {
         private fun unescapeString(value: String): String {
             return value.replace("\"\"", "\"")
         }
+
         private fun escapeString(value: String): String {
             return value.replace("\"", "\"\"")
         }
@@ -24,7 +24,7 @@ class StringToken(innerValue: String, range: Range, rawContents: String, file: S
         return "\"$escapedValue\""
     }
 
-    val escapedValue get() = escapeString(value)
+    val escapedValue get() = escapeString(value ?: "")
 }
 
 
