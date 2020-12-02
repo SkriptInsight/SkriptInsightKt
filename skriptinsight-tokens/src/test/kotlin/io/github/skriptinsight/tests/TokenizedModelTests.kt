@@ -13,6 +13,7 @@ class TokenizedModelTests {
             """
             on join:
                 send "hello world"
+                abs(-1)
         """.trimIndent()
         )
 
