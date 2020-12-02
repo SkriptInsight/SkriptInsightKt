@@ -6,6 +6,7 @@ import io.github.skriptinsight.SyntaxFacts.whitespaceRegex
 import io.github.skriptinsight.editing.extensions.getGroupRange
 import io.github.skriptinsight.editing.location.Range
 import io.github.skriptinsight.file.SkriptFile
+import io.github.skriptinsight.editing.MatchContext
 import io.github.skriptinsight.tokens.SkriptNodeToken
 import io.github.skriptinsight.tokens.SkriptToken
 import io.github.skriptinsight.tokens.impl.FunctionCallToken
@@ -14,7 +15,6 @@ import io.github.skriptinsight.tokens.impl.WhitespaceToken
 import io.github.skriptinsight.tokens.work.TokenizedModelProcess
 import io.github.skriptinsight.tokens.work.TokenizedModelProcessData
 import org.intellij.lang.annotations.Language
-import java.util.regex.MatchResult
 import java.util.regex.Pattern
 
 object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
@@ -30,7 +30,7 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
 
     private fun <R : SkriptToken> token(
         @Language("RegExp") pattern: String,
-        creator: (SkriptFile, Range, String, MatchResult) -> SkriptToken
+        creator: (SkriptFile, Range, String, MatchContext) -> SkriptToken
     ) {
         token<R>(Pattern.compile(pattern), creator)
     }
@@ -40,7 +40,7 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
             FunctionCallToken(matchResult)
         }
         token<StringToken>(stringMatcher) { skriptFile, range, rawContent, matchResult ->
-            StringToken(matchResult.group(1))
+            StringToken(matchResult.matchResult.group(1))
         }
         token<WhitespaceToken>(whitespaceRegex) { skriptFile, range, rawContent, _ ->
             WhitespaceToken()
@@ -63,7 +63,8 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
             val matcher = pattern.matcher(content)
 
             while (matcher.find()) {
-                val matchRange = matcher.getGroupRange(matcher.groupCount(), node.indentCount, lineNumber)
+                val indentCount = node.indentCount
+                val matchRange = matcher.getGroupRange(matcher.groupCount(), indentCount, lineNumber)
                 //If this node isn't within a previously matched token, add it
                 if (tokens.none { t -> t.range.contains(matchRange) }) {
                     val matchResult = matcher.toMatchResult()
@@ -73,7 +74,7 @@ object NodeTokenizeProcess : TokenizedModelProcess<SkriptNodeToken>() {
                             file,
                             matchRange,
                             rawMatchContent,
-                            matchResult
+                            MatchContext(matcher, matchResult, indentCount, lineNumber)
                         ).also { it.setupToken(matchRange, rawMatchContent, file) }
                     )
                 }

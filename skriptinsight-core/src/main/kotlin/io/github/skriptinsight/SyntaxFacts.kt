@@ -30,11 +30,6 @@ object SyntaxFacts {
     val commandRegex = ("(?i)^command /?(\\S+)\\s*(\\s+(.+))?$")
 
     @Language("Regexp")
-    val argumentRegex =
-        ("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*($wildcard))?\\s*>")
-
-
-    @Language("Regexp")
     val varRegex =
         ("((the )?var(iable)? )?\\{([^{}]|%\\{|\\}%)+\\}")
 
@@ -43,10 +38,14 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val listSplitRegex = ("\\s*,?\\s+(and|n?or)\\s+|\\s*,\\s*")
-    
+
     @Language("Regexp")
     val functionCallRegex =
         ("($functionNameRegex)\\((.*)\\)")
+
+    @Language("Regexp")
+    val argumentRegex =
+        ("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*($wildcard))?\\s*>")
 
     @Language("Regexp")
     val linkRegex = ("[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")

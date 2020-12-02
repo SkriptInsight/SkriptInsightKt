@@ -5,7 +5,7 @@ import io.github.skriptinsight.tokens.TypedSkriptToken
 /**
  * Represents a string on a Skript file
  *
- * @param innerValue The inner value of a string (the contents)
+ * @param value The inner value of a string (the contents)
  * @author NickAcPT
  */
 class StringToken(value: String) : TypedSkriptToken<String>(unescapeString(value)) {
