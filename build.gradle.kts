@@ -4,52 +4,42 @@ plugins {
     `maven-publish`
 }
 
-allprojects {
-    group = "io.github.skriptinsight"
-    version = "0.1-SNAPSHOT"
+group = "io.github.skriptinsight"
+version = "0.1-SNAPSHOT"
+
+repositories {
+    mavenCentral()
 }
 
-subprojects {
-    apply {
-        plugin("org.jetbrains.kotlin.jvm")
-        plugin("com.github.johnrengelman.shadow")
-        plugin("org.gradle.maven-publish")
+val shadow by configurations
+val testImplementation by configurations
+
+dependencies {
+    shadow(kotlin("stdlib"))
+    testImplementation(kotlin("stdlib"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
     }
+}
 
-    repositories {
-        mavenCentral()
-    }
+// config JVM target to 11 for kotlin compilation tasks
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "11"
+}
 
-    val shadow by configurations
-    val testImplementation by configurations
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    classifier = null
+}
 
-    dependencies {
-        shadow(kotlin("stdlib"))
-        testImplementation(kotlin("stdlib"))
-        testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
-        }
-    }
-
-    // config JVM target to 11 for kotlin compilation tasks
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = "11"
-    }
-
-    tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-        classifier = null
-    }
-
-    publishing {
-        publications {
-            create("shadow", MavenPublication::class.java) {
-                project.shadow.component(this)
-            }
+publishing {
+    publications {
+        create("shadow", MavenPublication::class.java) {
+            project.shadow.component(this)
         }
     }
 }
