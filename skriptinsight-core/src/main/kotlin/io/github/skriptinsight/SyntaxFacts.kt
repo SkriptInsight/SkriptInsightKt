@@ -31,7 +31,7 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val varRegex =
-        ("((the )?var(iable)? )?\\{([^{}]|%\\{|\\}%)+\\}")
+        ("(?<varprefix>(?<theprefix>the )?var(?<iableprefix>iable)? )?\\{((?:[^{}]|%\\{|}%)+)}")
 
     @Language("Regexp")
     val lineRegex = "^((?:[^#]|##)*)(\\s*#(?!#).*)$"
@@ -48,7 +48,7 @@ object SyntaxFacts {
         ("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*($wildcard))?\\s*>")
 
     @Language("Regexp")
-    val linkRegex = ("[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")
+    val linkRegex = ("[-a-zA-Z0-9@:%._+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)")
 
 
 }
