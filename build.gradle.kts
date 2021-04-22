@@ -1,6 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    kotlin("jvm") version "1.4.32"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
     `maven-publish`
 }
 
@@ -37,12 +40,12 @@ subprojects {
     }
 
     // config JVM target to 11 for kotlin compilation tasks
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = "11"
     }
 
-    tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-        classifier = null
+    tasks.withType<ShadowJar> {
+        archiveClassifier.set(null as? String?)
     }
 
     publishing {
@@ -62,8 +65,8 @@ tasks.withType<Test> {
     outputs.upToDateWhen { false }
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    classifier = null
+tasks.withType<ShadowJar> {
+    archiveClassifier.set(null as? String?)
 
     relocate("kotlin", "${project.group}.depends.kotlin")
     relocate("org.intellij", "${project.group}.depends.intellij")
