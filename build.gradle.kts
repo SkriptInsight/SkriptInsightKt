@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    kotlin("multiplatform") version "1.4.21"
+    //id("com.github.johnrengelman.shadow") version "6.0.0"
     `maven-publish`
 }
 
@@ -11,58 +11,31 @@ repositories {
     mavenCentral()
 }
 
-val shadow by configurations
-val testImplementation by configurations
-
-dependencies {
-    shadow(kotlin("stdlib"))
-    testImplementation(kotlin("stdlib"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
-
-// config JVM target to 11 for kotlin compilation tasks
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "11"
-}
-
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    classifier = null
-}
-
-publishing {
-    publications {
-        create("shadow", MavenPublication::class.java) {
-            project.shadow.component(this)
-        }
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
-tasks.withType<Test> {
-    outputs.upToDateWhen { false }
-}
-
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    classifier = null
-
-    relocate("kotlin", "${project.group}.depends.kotlin")
-    relocate("org.intellij", "${project.group}.depends.intellij")
-    relocate("org.jetbrains", "${project.group}.depends.jetbrains")
-}
-
-dependencies {
-    implementation(kotlin("stdlib"))
-    subprojects.forEach {
-        implementation(it)
+kotlin {
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
+    js(BOTH) {
+        nodejs {
+        }
+    }
+    sourceSets {
+        val commonMain by getting
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+        val jvmMain by getting
+        val jvmTest by getting
+        val jsMain by getting
+        val jsTest by getting
     }
 }
