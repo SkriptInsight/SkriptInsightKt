@@ -21,7 +21,7 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val functionRegex =
-        "function ($functionNameRegex)\\((.*)\\)(?: :: (.+))?"
+        "function (?<name>$functionNameRegex)\\((?<params>.*)\\)(?: :: (?<return>.+))?"
 
     @Language("Regexp")
     val paramRegex = "\\s*(.+?)\\s*:(?=[^:]*$)\\s*(.+?)(?:\\s*=\\s*(.+))?\\s*"
@@ -49,6 +49,4 @@ object SyntaxFacts {
 
     @Language("Regexp")
     val linkRegex = ("[-a-zA-Z0-9@:%._+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)")
-
-
 }

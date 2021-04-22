@@ -17,7 +17,6 @@ fun Matcher.getGroupRange(id: Int, offset: Int = 0, lineNumber: Int): Range {
 }
 
 @JvmName("getGroupRange")
-@JvmOverloads
 fun MatchContext.getGroupRange(id: Int): Range {
     return this.matcher.getGroupRange(id, offsetStart = indentCount, offsetEnd = indentCount, lineNumber = lineNumber)
 }
