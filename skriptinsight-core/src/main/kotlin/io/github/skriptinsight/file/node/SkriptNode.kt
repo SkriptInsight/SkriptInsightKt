@@ -41,12 +41,12 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
     /**
      * The normalized count of the indentation of this node.
      */
-    val normalizedIndentCount = indentations.sumBy { it.type.size * it.amount }
+    val normalizedIndentCount = indentations.sumOf { it.type.size * it.amount }
 
     /**
      * The count of the indentation of this node.
      */
-    val indentCount = rawContent.takeWhile { it.isWhitespace() }.count()
+    internal val rawIndentCount = rawContent.takeWhile { it.isWhitespace() }.count()
 
     var contentRange: Range? = null
     var commentRange: Range? = null
@@ -64,12 +64,12 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
 
             //Compute range for content and comment
             val trimmedCharsAmount = originalContent.length - content.length
-            contentRange = groupRange(linePatternMatcher, 1, indentCount, offsetEnd = indentCount - trimmedCharsAmount)
-            commentRange = groupRange(linePatternMatcher, 2, indentCount)
+            contentRange = groupRange(linePatternMatcher, 1, rawIndentCount, offsetEnd = rawIndentCount - trimmedCharsAmount)
+            commentRange = groupRange(linePatternMatcher, 2, rawIndentCount)
         } else {
             //No comment. Default to un-indented raw content and no comment
             content = unIndentedRawContent.trimEnd()
-            contentRange = pos(indentCount)..pos(indentCount + content.length)
+            contentRange = pos(rawIndentCount)..pos(rawIndentCount + content.length)
             commentRange = contentRange!!.end..contentRange!!.end
         }
     }
@@ -118,5 +118,9 @@ data class SkriptNode(val lineNumber: Int, val rawContent: String, val indentati
 
     private fun groupRange(matcher: Matcher, group: Int, offsetStart: Int = 0, offsetEnd: Int = offsetStart): Range {
         return matcher.getGroupRange(group, offsetStart, offsetEnd, lineNumber)
+    }
+
+    override fun toString(): String {
+        return "SkriptNode(lineNumber=$lineNumber, indentations=${indentations.contentToString()}, content='$content', comment='$comment', isSectionNode=$isSectionNode)"
     }
 }

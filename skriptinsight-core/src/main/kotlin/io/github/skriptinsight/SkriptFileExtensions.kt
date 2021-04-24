@@ -16,7 +16,7 @@ fun SkriptFile.printStructuralTree(): String {
 
 private fun SkriptNode.printNodeChildren(sb: StringBuilder, indentationLevels: List<Int>) {
     sb.apply {
-        val parentSpace = parent?.normalizedIndentCount?.plus(1) ?: 0
+        val parentSpace = parent?.normalizedIndentCount?.takeIf { it > 0 }?.plus(1) ?: 0
         append(" ".repeat(parentSpace))
 
         val dashAmount = (normalizedIndentCount - parentSpace).coerceAtLeast(0)

@@ -15,11 +15,11 @@ fun computeNodeDataParents(file: SkriptFile) {
 fun computeIndentationLevelsForNode(
     nodeData: MutableCollection<SkriptNode>
 ): List<Int> {
-    val firstIndent = nodeData.firstOrNull()?.indentCount ?: 0
+    val firstIndent = nodeData.firstOrNull()?.rawIndentCount ?: 0
 
     return nodeData
         // First, take all the nodes that are the same indent or are a child of the first indent
-        .takeWhile { it.indentCount == firstIndent || it.isChildrenAccordingToIndent(firstIndent) }
+        .takeWhile { it.rawIndentCount == firstIndent || it.isChildrenAccordingToIndent(firstIndent) }
         // Then, select all indentations
         .flatMap { it.indentations.asIterable() }
         // Now, group by the amount of indentations
@@ -35,9 +35,9 @@ fun computeIndentationLevelsForNode(
 fun SkriptNode.isOnSameIndentLevel(currentLevel: Int): Boolean {
     if (indentations.isEmpty() && currentLevel == 0) return true
 
-    return indentCount == currentLevel
+    return rawIndentCount == currentLevel
 }
 
 internal fun SkriptNode.isChildrenAccordingToIndent(indent: Int): Boolean {
-    return this.indentCount > indent //TODO: || node is EmptyLineNode || node is CommentLineNode
+    return this.rawIndentCount > indent //TODO: || node is EmptyLineNode || node is CommentLineNode
 }
